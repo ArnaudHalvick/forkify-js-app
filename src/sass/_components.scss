@@ -212,6 +212,42 @@
   }
 }
 
+.error-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 2rem;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
+  z-index: 1000;
+  width: 300px; /* Adjust the width as needed */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.error-modal__content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.error-modal__close-btn {
+  margin-top: 10px;
+  background: none;
+  border: none;
+  font-size: 1.6rem;
+  cursor: pointer;
+}
+
+.error-modal__message {
+  font-size: 1.6rem;
+  color: black;
+}
+
 .btn--clear-bookmarks {
   margin: 1rem;
   padding: 1.2rem 3rem;
