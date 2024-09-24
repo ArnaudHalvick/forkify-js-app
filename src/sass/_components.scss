@@ -247,6 +247,28 @@
   }
 }
 
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.pagination__info {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: $color-primary;
+  margin: 0 1rem;
+  display: inline-block;
+  background-color: $color-grey-light-1;
+  border-radius: 10rem;
+  line-height: 1.5;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 1rem;
+}
+
 // Added this because I couldn't center the btn with just margin auto
 .bookmarks--clear--btn__container {
   display: flex;

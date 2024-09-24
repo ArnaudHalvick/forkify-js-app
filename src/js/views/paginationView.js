@@ -25,25 +25,34 @@ class PaginationView extends View {
    * @returns {string} HTML markup for the pagination buttons.
    * @private
    */
+  // In paginationView.js
   _generateMarkup() {
-    const curPage = this._data.page; // Current page number
+    const curPage = this._data.page;
     const numPages = Math.ceil(
       this._data.results.length / this._data.resultsPerPage
-    ); // Total number of pages
+    );
 
-    // If only 1 page exists, don't show any pagination
-    if (numPages === 1) return "";
+    const totalPagesMarkup = `<span class="pagination__info">Page ${curPage}/${numPages}</span>`;
 
-    // If on the first page, show only the "Next" button
-    if (curPage === 1) return this._generateNextPageBtn(curPage);
+    // First page with more than one page
+    if (curPage === 1 && numPages > 1) {
+      return `${totalPagesMarkup} ${this._generateNextPageBtn(curPage)}`;
+    }
 
-    // If on the last page, show only the "Previous" button
-    if (curPage === numPages) return this._generatePrevPageBtn(curPage);
+    // Last page
+    if (curPage === numPages && numPages > 1) {
+      return `${this._generatePrevPageBtn(curPage)} ${totalPagesMarkup}`;
+    }
 
-    // If on a middle page, show both "Previous" and "Next" buttons
-    return `${this._generatePrevPageBtn(curPage)} ${this._generateNextPageBtn(
-      curPage
-    )}`;
+    // Other pages
+    if (curPage < numPages) {
+      return `${this._generatePrevPageBtn(
+        curPage
+      )} ${totalPagesMarkup} ${this._generateNextPageBtn(curPage)}`;
+    }
+
+    // Only one page (no buttons needed)
+    return totalPagesMarkup;
   }
 
   /**
