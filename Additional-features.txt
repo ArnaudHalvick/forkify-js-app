@@ -1,0 +1,15 @@
+// Simple
+Display number of pages betweenthe pagination buttons
+Perform ingredientvalidation in view, before submitting the form - Warn ahead of time if the format is wrong
+Improve recipe ingredient input : separate in multiple fields (already done) and allow more than 6 ingredients
+Modify icon added to say that the recipe is from a user. Display some text maybe ? Add alt text to icon ?
+When clearing bookmarks, update icon on current page
+
+// Advanced
+Shopping list feature : button that add all of the ingredients of the recipe to a list
+Weekly meal planning feature : assign recipes to the next 7 days and sho on a weekly calendar. 
+    - Use drop down to assign recipe to day. If recipe already assigned to day = icon. Overwrite recipe if assigned again ?
+    - Create pannel to show all assigned recipes on a weekly calendar
+
+// Very complex
+Get nutrition data on each ingredient for Spoonacular food API and calculate total calories of recipe
