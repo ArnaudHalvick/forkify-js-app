@@ -100,13 +100,13 @@ class RecipeView extends View {
           <use href="${icons}#icon-user"></use>
         </svg>
       </div>
-      <button class="btn--round btn--bookmark">
-        <svg class="">
-          <use href="${icons}#icon-bookmark${
+     <button class="btn--round btn--bookmark">
+  <svg class="">
+    <use href="${icons}#icon-bookmark${
       this._data.bookmarked ? "-fill" : ""
     }"></use>
-        </svg>
-      </button>
+  </svg>
+</button>
     </div>
   
     <div class="recipe__ingredients">

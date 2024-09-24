@@ -118,8 +118,19 @@ const controlBookmarks = function () {
  * Clear all bookmarks when the user clicks the clear button.
  */
 const controlClearBookmarks = function () {
-  model.clearBookmarks(); // Clear bookmarks in the state
-  bookmarksView.update(model.state.bookmarks); // Update the bookmarks view
+  // Clear bookmarks in the state
+  model.clearBookmarks();
+
+  // Update the current recipe's bookmarked status if it's in the bookmarks list
+  if (model.state.recipe) {
+    model.state.recipe.bookmarked = false; // Explicitly set bookmarked status to false
+  }
+
+  // Update the bookmarks view
+  bookmarksView.update(model.state.bookmarks);
+
+  // Update the current recipe view to reflect the unbookmarked status
+  recipeView.update(model.state.recipe);
 };
 
 /**
