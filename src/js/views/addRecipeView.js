@@ -94,11 +94,15 @@ class AddRecipeView extends View {
         }
       }
 
-      // Create the full recipe object with description and ingredients
+      // Create the full recipe object (without description)
       const recipeData = {
-        ...data,
+        title: data.title,
+        sourceUrl: data.sourceUrl,
+        image: data.image,
+        publisher: data.publisher,
+        cookingTime: +data.cookingTime,
+        servings: +data.servings,
         ingredients,
-        description: data.description, // Include the description from the form
       };
 
       handler(recipeData); // Pass recipe data to the handler

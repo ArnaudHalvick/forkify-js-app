@@ -96,21 +96,6 @@
     justify-self: center;
   }
 
-  &__description {
-    grid-column: 1 / -1; // Ensure it spans across the entire width of the form
-
-    textarea {
-      font-family: "Nunito Sans", sans-serif;
-      font-size: 1.6rem;
-      padding: 1rem;
-      border: 1px solid #ddd;
-      border-radius: 0.5rem;
-      resize: vertical; // Allow vertical resizing if needed
-      width: 100%; // Take up the full width
-      height: 15rem;
-    }
-  }
-
   // Ingredient row styling
   .ingredient-row {
     display: flex; // Align the fields in a row

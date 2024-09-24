@@ -25,7 +25,6 @@ const createRecipeObject = function (data) {
     servings: recipe.servings,
     cookingTime: recipe.cooking_time,
     ingredients: recipe.ingredients,
-    description: recipe.description || "", // Add description with fallback to empty string
     ...(recipe.key && { key: recipe.key }), // Conditionally add 'key' if it exists
   });
 };
@@ -183,7 +182,6 @@ export const uploadRecipe = async function (newRecipe) {
       cooking_time: +newRecipe.cookingTime,
       servings: +newRecipe.servings,
       ingredients,
-      description: newRecipe.description, // Add description to the recipe
     };
 
     // Send the recipe data to the API
