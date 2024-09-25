@@ -1,7 +1,7 @@
 // Simple
-Display number of pages betweenthe pagination buttons
-Perform ingredientvalidation in view, before submitting the form - Warn ahead of time if the format is wrong
-Improve recipe ingredient input : separate in multiple fields (already done) and allow more than 6 ingredients
+DONE - Display number of pages betweenthe pagination buttons
+DONE - Perform ingredientvalidation in view, before submitting the form - Warn ahead of time if the format is wrong
+Improve recipe ingredient input : separate in multiple fields and allow more than 6 ingredients
 Modify icon added to say that the recipe is from a user. Display some text maybe ? Add alt text to icon ?
 When clearing bookmarks, update icon on current page
 

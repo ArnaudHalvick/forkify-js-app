@@ -91,28 +91,28 @@
     grid-column: 1/-1;
   }
 
-  &__btn {
-    grid-column: 1 / -1;
-    justify-self: center;
+  .ingredients-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
   }
 
   // Ingredient row styling
   .ingredient-row {
-    display: flex; // Align the fields in a row
-    gap: 1.5rem; // Space between fields
-    align-items: center; // Vertically center the fields
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
 
     input,
     select {
-      font-size: 1.5rem; // Ensure consistent font size
-      padding: 0.8rem; // Add padding for spacing inside the input
-      border: 1px solid #ddd; // Border to match other inputs
-      border-radius: 0.5rem; // Slight rounding of corners
-      width: 100%; // Make inputs take up available space
+      font-size: 1.5rem;
+      padding: 0.8rem;
+      border: 1px solid #ddd;
+      border-radius: 0.5rem;
     }
 
     .ingredient--select {
-      max-width: 5rem;
+      min-width: 6rem;
     }
 
     .ingredient--quantity {
@@ -125,5 +125,13 @@
       -moz-appearance: none;
       appearance: none;
     }
+  }
+
+  &__btn--container {
+    grid-column: 1 / -1; // Span across all columns
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    margin-top: 2rem;
   }
 }

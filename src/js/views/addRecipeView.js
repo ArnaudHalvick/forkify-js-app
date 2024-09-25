@@ -14,17 +14,84 @@ class AddRecipeView extends View {
   _errorModalOverlay = document.querySelector(".error-modal--overlay");
 
   // Store the initial form HTML to restore later (after success message)
-  _formHTML = this._parentElement.innerHTML;
+  _formHTML = `
+    <div class="upload__column">
+      <h3 class="upload__heading">Recipe data</h3>
+      <label>Title</label>
+      <input value="TEST23" required name="title" type="text" />
+      <label>URL</label>
+      <input value="TEST23" required name="sourceUrl" type="text" />
+      <label>Image URL</label>
+      <input value="TEST23" required name="image" type="text" />
+      <label>Publisher</label>
+      <input value="TEST23" required name="publisher" type="text" />
+      <label>Prep time</label>
+      <input value="23" required name="cookingTime" type="number" />
+      <label>Servings</label>
+      <input value="23" required name="servings" type="number" />
+    </div>
+
+    <div class="upload__column">
+      <h3 class="upload__heading">Ingredients</h3>
+      <div class="ingredients-container">
+      </div>
+      <!-- Add Ingredient Button -->
+      
+    </div>
+    <div class="upload__btn--container">
+      <!-- Submit Button -->
+      <button class="btn upload__btn">
+        <svg>
+          <use href="${icons}#icon-upload-cloud"></use>
+        </svg>
+        <span>Upload</span>
+      </button><button type="button" class="btn btn--add-ingredient">
+        Add Ingredient
+      </button>
+    </div>
+  `;
+
+  // Define the ingredient input group template
+  _ingredientInputGroup = `
+    <div class="ingredient-row">
+      <label>Ingredient</label>
+      <input
+        class="ingredient--quantity"
+        type="number"
+        name="quantity"
+        placeholder="Quantity"
+        min="0"
+        step="0.1"
+      />
+      <select class="ingredient--select" name="unit">
+        <option value="">Unit</option>
+        <option value="g">g</option>
+        <option value="kg">kg</option>
+        <option value="ml">ml</option>
+        <option value="l">l</option>
+        <option value="tsp">tsp</option>
+        <option value="tbsp">tbsp</option>
+        <option value="cup">cup</option>
+      </select>
+      <input
+        class="ingredient--description"
+        type="text"
+        name="description"
+        placeholder="Ingredient"
+      />
+    </div>
+  `;
 
   constructor() {
     super();
     this._addHandlerShowWindow(); // Attach event handler to show modal
     this._addHandlerHideWindow(); // Attach event handler to hide modal
     this._addHandlerCloseErrorModal(); // Attach event handler to close error modal
+    // Do NOT call _addHandlerAddIngredient() here
   }
 
   /**
-   * Close the modal window. Can't use toggle when uploading the recipe, because if the user closes it before timeout, it will reopen
+   * Close the modal window.
    */
   closeWindow() {
     this._overlay.classList.add("hidden");
@@ -76,12 +143,45 @@ class AddRecipeView extends View {
   }
 
   /**
+   * Attach event handler to the "Add Ingredient" button
+   */
+  _addHandlerAddIngredient() {
+    const addIngredientBtn = this._parentElement.querySelector(
+      ".btn--add-ingredient"
+    );
+    if (!addIngredientBtn) return; // Exit if button is not found
+
+    addIngredientBtn.addEventListener(
+      "click",
+      this._addIngredientField.bind(this)
+    );
+  }
+
+  /**
+   * Add a new ingredient input group to the form
+   */
+  _addIngredientField() {
+    const ingredientsContainer = this._parentElement.querySelector(
+      ".ingredients-container"
+    );
+    const ingredientRow = document.createElement("div");
+    ingredientRow.classList.add("ingredient-row");
+
+    // Use the ingredient input group template
+    ingredientRow.innerHTML = this._ingredientInputGroup;
+
+    ingredientsContainer.appendChild(ingredientRow);
+  }
+
+  /**
    * Restore the original form HTML after submission.
    * Useful for resetting the form when reopening the modal.
    * @private
    */
   _restoreForm() {
     this._parentElement.innerHTML = this._formHTML;
+    this._addHandlerAddIngredient(); // Re-attach event listener after form is rendered
+    this._addIngredientField(); // Add initial ingredient field
   }
 
   /**
@@ -91,7 +191,7 @@ class AddRecipeView extends View {
    */
   _addHandlerShowWindow() {
     this._btnOpen.addEventListener("click", () => {
-      this._restoreForm(); // Restore the form content
+      this._restoreForm(); // Restore the form content and attach event listeners
       this.toggleWindow(); // Open the modal
     });
   }
@@ -110,7 +210,6 @@ class AddRecipeView extends View {
    * @param {Array} ingredients The ingredients array from the form
    * @returns {boolean} True if all ingredients are valid, false otherwise
    */
-
   _validateIngredients(ingredients) {
     for (let i = 0; i < ingredients.length; i++) {
       const { quantity, unit, description } = ingredients[i];
@@ -156,38 +255,41 @@ class AddRecipeView extends View {
    */
   addHandlerUpload(handler) {
     this._parentElement.addEventListener("submit", e => {
-      e.preventDefault(); // Prevent default form submission behavior
+      e.preventDefault();
 
-      const formData = new FormData(this._parentElement); // Create a FormData object from the form element
-      const data = Object.fromEntries(formData); // Convert the FormData object into a plain object
+      const formData = new FormData(this._parentElement);
+      const data = Object.fromEntries(formData);
 
-      // Gather ingredients from the form (up to 6 ingredients)
+      // Collect ingredients from all ingredient input groups
+      const ingredientRows =
+        this._parentElement.querySelectorAll(".ingredient-row");
       const ingredients = [];
-      for (let i = 1; i <= 6; i++) {
-        const quantity = data[`quantity-${i}`];
-        const unit = data[`unit-${i}`];
-        const description = data[`ingredient-${i}`];
 
-        // Filter out ingredients that are completely empty (no quantity, unit, or description)
+      ingredientRows.forEach((row, index) => {
+        const quantity = row.querySelector('input[name="quantity"]').value;
+        const unit = row.querySelector('select[name="unit"]').value;
+        const description = row.querySelector(
+          'input[name="description"]'
+        ).value;
+
+        // Check if the ingredient fields are not empty
         if (quantity || unit || (description && description.trim() !== "")) {
           ingredients.push({
-            quantity: quantity ? +quantity : null, // Convert to number or null if no value
+            quantity: quantity ? +quantity : null,
             unit,
-            description: description ? description.trim() : "", // Trim whitespace from the description
+            description: description ? description.trim() : "",
           });
         }
-      }
+      });
 
-      // Check if all ingredients are empty
+      // Validate and proceed with the rest of your code
       if (ingredients.length === 0) {
         this.showErrorModal("You must add at least one ingredient.");
-        return; // Prevent form submission
+        return;
       }
 
-      // Validate ingredients before proceeding
       if (!this._validateIngredients(ingredients)) return;
 
-      // Create the full recipe object
       const recipeData = {
         title: data.title,
         sourceUrl: data.sourceUrl,
@@ -195,10 +297,10 @@ class AddRecipeView extends View {
         publisher: data.publisher,
         cookingTime: +data.cookingTime,
         servings: +data.servings,
-        ingredients, // Only non-empty ingredients will be passed
+        ingredients,
       };
 
-      handler(recipeData); // Pass recipe data to the handler
+      handler(recipeData);
     });
   }
 
