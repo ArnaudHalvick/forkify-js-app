@@ -201,6 +201,17 @@ const controlDeleteShoppingListItem = function (id) {
 };
 
 /**
+ * Control clearing the shopping list when the clear button is clicked
+ */
+const controlClearShoppingList = function () {
+  // Clear the shopping list in the model
+  model.clearShoppingList();
+
+  // Update the shopping list view
+  shoppingListView.render(model.getShoppingList());
+};
+
+/**
  * Initialize the application by setting up all event listeners and handlers.
  */
 const init = function () {
@@ -228,12 +239,17 @@ const init = function () {
   // Handle recipe form submissions for adding a new recipe
   addRecipeView.addHandlerUpload(controlAddRecipe);
 
-  // Link handler with the button in recipe view
+  // Link handler with the button in recipe view to add items to the shopping list
   recipeView.addHandlerAddToShoppingList(controlAddToShoppingList);
 
+  // Delete items from the shopping list when delete button is clicked
   shoppingListView.addHandlerDeleteItem(controlDeleteShoppingListItem);
 
+  // Show shopping list window and render items in the list
   shoppingListView.addHandlerShowWindowAndRender(controlShowShoppingList);
+
+  // Clear all items in the shopping list when the clear button is clicked
+  shoppingListView.addHandlerClearShoppingList(controlClearShoppingList);
 };
 
 // Initialize the application

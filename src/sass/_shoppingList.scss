@@ -25,15 +25,44 @@
   max-height: 80%;
 }
 
+.shopping-list__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center; /* Ensure buttons are vertically aligned */
+  padding: 1rem 0; /* Optional: Add padding for spacing */
+}
+
 /* Close Button */
 .btn--close-shopping-list {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
   font-size: 2rem;
   background: none;
   border: none;
   cursor: pointer;
+  align-self: center; /* Ensure it's aligned with other content */
+}
+
+/* Clear Shopping List Button */
+.btn--clear-shopping-list {
+  background-color: #f44336; /* Red background */
+  color: #fff; /* White text */
+  border: none;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  font-size: 1.4rem;
+  border-radius: 4px;
+  align-self: center; /* Ensure it's aligned with the close button */
+}
+
+.btn--clear-shopping-list:hover {
+  background-color: #d32f2f; /* Darker red on hover */
+}
+
+/* Styles for the empty shopping list message */
+.shopping-list--message {
+  text-align: center;
+  font-size: 1.6rem;
+  color: #555;
+  padding: 2rem;
 }
 
 /* Shopping List Content */
@@ -85,10 +114,6 @@
 
 .shopping-list__item:hover {
   background-image: linear-gradient(to bottom right, #fbdb89, #f48982);
-}
-
-.btn--close-shopping-list {
-  font-size: 2rem;
 }
 
 .shopping-list--message {

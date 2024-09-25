@@ -9,11 +9,14 @@ class ShoppingListView extends View {
   _overlay = document.querySelector(".overlay--shopping-list");
   _btnOpen = document.querySelector(".nav__btn--shopping-list");
   _btnClose = document.querySelector(".btn--close-shopping-list");
+  _btnClear = document.querySelector(".btn--clear-shopping-list"); // New clear button
+
   _errorMessage = "Your shopping list is empty.";
 
   constructor() {
     super();
     this._addHandlerHideWindow();
+    this.addHandlerClearShoppingList();
   }
 
   // Method to close the modal
@@ -57,6 +60,14 @@ class ShoppingListView extends View {
 
       handler(id);
     });
+  }
+
+  /**
+   * Add handler for clearing the shopping list
+   * @param {Function} handler - Function to call when the clear button is clicked
+   */
+  addHandlerClearShoppingList(handler) {
+    this._btnClear.addEventListener("click", handler);
   }
 
   /**

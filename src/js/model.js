@@ -227,3 +227,11 @@ export const deleteShoppingListItem = function (id) {
 export const getShoppingList = function () {
   return state.shoppingList;
 };
+
+/**
+ * Clear all items from the shopping list and update localStorage.
+ */
+export const clearShoppingList = function () {
+  state.shoppingList = []; // Clear the shopping list in the state
+  persistShoppingList(); // Update localStorage
+};
