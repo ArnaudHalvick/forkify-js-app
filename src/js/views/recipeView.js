@@ -44,6 +44,18 @@ class RecipeView extends View {
   }
 
   /**
+   * Add event listener to the "Add to Shopping List" button
+   * @param {Function} handler - The function to call when the button is clicked
+   */
+  addHandlerAddToShoppingList(handler) {
+    this._parentElement.addEventListener("click", function (e) {
+      const btn = e.target.closest(".btn--add-shopping-list");
+      if (!btn) return;
+      handler();
+    });
+  }
+
+  /**
    * Generate the HTML markup for the entire recipe.
    * @returns {string} - The generated HTML string for the recipe.
    * @private
@@ -59,6 +71,12 @@ class RecipeView extends View {
     </figure>
   
     <div class="recipe__details">
+    <button class="btn--round btn--add-shopping-list">
+          <svg class="icon">
+            <use href="${icons}#icon-cart"></use>
+          </svg>
+          <span>Add to Shopping List</span>
+        </button>
       <div class="recipe__info">
         <svg class="recipe__info-icon">
           <use href="${icons}#icon-clock"></use>

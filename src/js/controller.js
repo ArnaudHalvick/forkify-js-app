@@ -6,6 +6,7 @@ import paginationView from "./views/paginationView.js";
 import bookmarksView from "./views/bookmarksView.js";
 import addRecipeView from "./views/addRecipeView.js";
 import { MODAL_CLOSE_SEC } from "./config.js";
+import shoppingListView from "./views/shoppingListView.js";
 
 import "core-js/stable";
 import "regenerator-runtime/runtime.js";
@@ -167,6 +168,20 @@ const controlAddRecipe = async function (newRecipe) {
 };
 
 /**
+ * Control adding ingredients of the current recipe to the shopping list
+ */
+const controlAddToShoppingList = function () {
+  // Add ingredients to the shopping list in the model
+  model.addToShoppingList();
+
+  // Render the updated shopping list
+  shoppingListView.render(model.getShoppingList());
+
+  // Open the shopping list modal
+  shoppingListView.openWindow();
+};
+
+/**
  * Initialize the application by setting up all event listeners and handlers.
  */
 const init = function () {
@@ -193,6 +208,9 @@ const init = function () {
 
   // Handle recipe form submissions for adding a new recipe
   addRecipeView.addHandlerUpload(controlAddRecipe);
+
+  // Link handler with the button in recipe view
+  recipeView.addHandlerAddToShoppingList(controlAddToShoppingList);
 };
 
 // Initialize the application

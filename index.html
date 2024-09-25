@@ -39,6 +39,14 @@
         <nav class="nav">
           <ul class="nav__list">
             <li class="nav__item">
+              <button class="nav__btn nav__btn--shopping-list">
+                <svg class="nav__icon">
+                  <use href="src/img/icons.svg#icon-edit"></use>
+                </svg>
+                <span>Shopping List</span>
+              </button>
+            </li>
+            <li class="nav__item">
               <button class="nav__btn nav__btn--add-recipe">
                 <svg class="nav__icon">
                   <use href="src/img/icons.svg#icon-edit"></use>
@@ -100,6 +108,14 @@
             </svg>
           </div>
           <p>Start by searching for a recipe or an ingredient. Have fun!</p>
+        </div>
+      </div>
+
+      <!-- Shopping List Modal -->
+      <div class="shopping-list-window hidden">
+        <button class="btn--close-shopping-list">&times;</button>
+        <div class="shopping-list-content">
+          <!-- Shopping list items will be dynamically inserted here -->
         </div>
       </div>
     </div>

@@ -6,6 +6,7 @@ export const state = {
   recipe: {}, // Stores the current recipe object
   search: { query: "", results: [], resultsPerPage: RES_PER_PAGE, page: 1 }, // Stores search query and results
   bookmarks: [], // Stores bookmarked recipes
+  shoppingList: [], // Stores ingredients added to the shopping list
 };
 
 /**
@@ -191,4 +192,19 @@ export const uploadRecipe = async function (newRecipe) {
   } catch (err) {
     throw err; // Rethrow error for further handling
   }
+};
+
+/**
+ * Add all ingredients of the current recipe to the shopping list
+ */
+export const addToShoppingList = function () {
+  // Add ingredients of the current recipe to the shopping list state
+  state.shoppingList.push(...state.recipe.ingredients);
+};
+
+/**
+ * Get the current shopping list
+ */
+export const getShoppingList = function () {
+  return state.shoppingList;
 };
