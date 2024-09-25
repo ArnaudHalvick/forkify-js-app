@@ -9,6 +9,7 @@ class ShoppingListView extends View {
   _overlay = document.querySelector(".overlay--shopping-list");
   _btnOpen = document.querySelector(".nav__btn--shopping-list");
   _btnClose = document.querySelector(".btn--close-shopping-list");
+  _errorMessage = "Your shopping list is empty.";
 
   constructor() {
     super();
@@ -62,7 +63,8 @@ class ShoppingListView extends View {
    * Generate the HTML markup for the shopping list
    */
   _generateMarkup() {
-    if (this._data.length === 0) return "<p>Your shopping list is empty.</p>";
+    if (!this._data || this._data.length === 0)
+      return '<p class="shopping-list--message">Your shopping list is empty.</p>';
     return this._data.map(ing => this._generateMarkupIngredient(ing)).join("");
   }
 

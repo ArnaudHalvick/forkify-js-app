@@ -10,9 +10,8 @@ export default class View {
    * @returns {undefined | string} Markup string if render is false
    */
   render(data, render = true) {
-    // If no data or empty array, display an error message
-    if (!data || (Array.isArray(data) && data.length === 0))
-      return this.renderError();
+    // If data is undefined or null, display an error message
+    if (data === undefined || data === null) return this.renderError();
 
     // Store the data in the instance for further use
     this._data = data;
