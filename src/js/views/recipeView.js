@@ -71,12 +71,6 @@ class RecipeView extends View {
     </figure>
   
     <div class="recipe__details">
-    <button class="btn--round btn--add-shopping-list">
-          <svg class="icon">
-            <use href="${icons}#icon-cart"></use>
-          </svg>
-          <span>Add to Shopping List</span>
-        </button>
       <div class="recipe__info">
         <svg class="recipe__info-icon">
           <use href="${icons}#icon-clock"></use>
@@ -132,7 +126,12 @@ class RecipeView extends View {
       <ul class="recipe__ingredient-list">
         ${this._data.ingredients.map(this._generateMarkupIngredient).join("")}
       </ul>
+      <div class="recipe__add-to-shopping-list">
+        <button class="btn btn--add-shopping-list">Add to Shopping List</button>
+      </div>
+
     </div>
+
   
     <div class="recipe__directions">
       <h2 class="heading--2">How to cook it</h2>

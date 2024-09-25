@@ -337,3 +337,23 @@
   align-items: center;
   flex-direction: column;
 }
+
+.recipe__add-to-shopping-list {
+  display: flex;
+  justify-content: center;
+  margin-top: 3rem;
+}
+
+.btn--add-shopping-list {
+  background-color: #f38e82;
+  color: #fff;
+  border: none;
+  padding: 1rem 2rem;
+  font-size: 1.6rem;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.btn--add-shopping-list:hover {
+  background-color: #e3675c;
+}
