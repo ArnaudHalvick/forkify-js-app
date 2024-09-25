@@ -1,6 +1,7 @@
 // shoppingListView.js
 
 import View from "./View.js";
+import icons from "url:../../img/icons.svg";
 
 class ShoppingListView extends View {
   _parentElement = document.querySelector(".shopping-list-content");
@@ -50,9 +51,22 @@ class ShoppingListView extends View {
   _generateMarkupIngredient(ing) {
     return `
       <li class="shopping-list__item">
-        <span>${ing.quantity ? ing.quantity : ""} ${ing.unit} ${
-      ing.description
-    }</span>
+        <div class="shopping-list__quantity">
+          ${ing.quantity ? ing.quantity : ""}
+        </div>
+        <div class="shopping-list__description">
+          ${ing.description}
+          ${
+            ing.unit
+              ? `<span class="shopping-list__unit">${ing.unit}</span>`
+              : ""
+          }
+        </div>
+        <button class="shopping-list__delete">
+          <svg>
+            <use href="${icons}#icon-minus-circle"></use>
+          </svg>
+        </button>
       </li>
     `;
   }

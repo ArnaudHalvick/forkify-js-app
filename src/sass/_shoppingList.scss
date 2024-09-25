@@ -40,3 +40,53 @@
 .shopping-list-content {
   margin-top: 2rem;
 }
+
+/* Shopping List Item */
+.shopping-list__item {
+  display: flex;
+  align-items: center;
+  padding: 1rem 0;
+  border-bottom: 1px solid #e2e2e2;
+  font-size: 1.6rem;
+}
+
+.shopping-list__item:last-child {
+  border-bottom: none;
+}
+
+.shopping-list__item .shopping-list__quantity {
+  flex: 0 0 6rem;
+  font-weight: bold;
+  color: #555;
+}
+
+.shopping-list__item .shopping-list__description {
+  flex: 1;
+  color: #333;
+}
+
+.shopping-list__item .shopping-list__unit {
+  margin-left: 0.5rem;
+  color: #777;
+}
+
+.shopping-list__item .shopping-list__delete {
+  margin-left: auto;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.shopping-list__item .shopping-list__delete svg {
+  width: 2rem;
+  height: 2rem;
+  fill: #ff3b3b;
+}
+
+.shopping-list__item:hover {
+  background-image: linear-gradient(to bottom right, #fbdb89, #f48982);
+}
+
+.btn--close-shopping-list {
+  font-size: 2rem;
+}
