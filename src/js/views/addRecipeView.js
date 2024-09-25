@@ -12,6 +12,7 @@ class AddRecipeView extends View {
   _errorModal = document.querySelector(".error-modal");
   _errorModalCloseBtn = document.querySelector(".error-modal__close-btn");
   _errorModalOverlay = document.querySelector(".error-modal--overlay");
+  _isSubmitHandlerAttached = false; // Track if the submit handler is attached
 
   // Store the initial form HTML to restore later (after success message)
   _formHTML = `
@@ -35,15 +36,16 @@ class AddRecipeView extends View {
       <h3 class="upload__heading">Ingredients</h3>
       <div class="ingredients-container">
       </div>
-      
     </div>
+
     <div class="upload__btn--container">
       <button class="btn upload__btn">
         <svg>
           <use href="${icons}#icon-upload-cloud"></use>
         </svg>
         <span>Upload</span>
-      </button><button type="button" class="btn btn--add-ingredient">
+      </button>
+      <button type="button" class="btn btn--add-ingredient">
         Add Ingredient
       </button>
     </div>
@@ -85,7 +87,8 @@ class AddRecipeView extends View {
     this._addHandlerShowWindow(); // Attach event handler to show modal
     this._addHandlerHideWindow(); // Attach event handler to hide modal
     this._addHandlerCloseErrorModal(); // Attach event handler to close error modal
-    // Do NOT call _addHandlerAddIngredient() here
+    this._submitHandler = this._submitHandler.bind(this); // Bind submit handler
+    this._addIngredientFieldHandler = this._addIngredientField.bind(this); // Bind and store reference
   }
 
   /**
@@ -116,7 +119,7 @@ class AddRecipeView extends View {
   }
 
   /**
-   * Close the error modal
+   * Close the error modal.
    */
   closeErrorModal() {
     this._errorModal.classList.add("hidden");
@@ -124,7 +127,7 @@ class AddRecipeView extends View {
   }
 
   /**
-   * Attach event handler to close the error modal
+   * Attach event handler to close the error modal.
    */
   _addHandlerCloseErrorModal() {
     // Close the error modal when the close button is clicked
@@ -141,7 +144,7 @@ class AddRecipeView extends View {
   }
 
   /**
-   * Attach event handler to the "Add Ingredient" button
+   * Attach event handler to the "Add Ingredient" button.
    */
   _addHandlerAddIngredient() {
     const addIngredientBtn = this._parentElement.querySelector(
@@ -149,14 +152,15 @@ class AddRecipeView extends View {
     );
     if (!addIngredientBtn) return; // Exit if button is not found
 
-    addIngredientBtn.addEventListener(
+    addIngredientBtn.removeEventListener(
       "click",
-      this._addIngredientField.bind(this)
-    );
+      this._addIngredientFieldHandler
+    ); // Ensure old listener is removed
+    addIngredientBtn.addEventListener("click", this._addIngredientFieldHandler);
   }
 
   /**
-   * Add a new ingredient input group to the form
+   * Add a new ingredient input group to the form.
    */
   _addIngredientField() {
     const ingredientsContainer = this._parentElement.querySelector(
@@ -171,6 +175,14 @@ class AddRecipeView extends View {
     ingredientsContainer.appendChild(ingredientRow);
   }
 
+  // Clear ingredients container before rendering
+  _clearIngredientsContainer() {
+    const ingredientsContainer = this._parentElement.querySelector(
+      ".ingredients-container"
+    );
+    ingredientsContainer.innerHTML = ""; // Clear the container to avoid duplicates
+  }
+
   /**
    * Restore the original form HTML after submission.
    * Useful for resetting the form when reopening the modal.
@@ -179,7 +191,14 @@ class AddRecipeView extends View {
   _restoreForm() {
     this._parentElement.innerHTML = this._formHTML;
     this._addHandlerAddIngredient(); // Re-attach event listener after form is rendered
+    this._clearIngredientsContainer(); // Clear any previously added ingredient rows
     this._addIngredientField(); // Add initial ingredient field
+
+    // Attach submit event listener only once
+    if (!this._isSubmitHandlerAttached) {
+      this._parentElement.addEventListener("submit", this._submitHandler);
+      this._isSubmitHandlerAttached = true; // Mark submit handler as attached
+    }
   }
 
   /**
@@ -247,60 +266,83 @@ class AddRecipeView extends View {
   }
 
   /**
+   * Form submission handler.
+   * @param {Event} e - The submit event
+   */
+  _submitHandler(e) {
+    e.preventDefault();
+
+    // Collect form data excluding ingredient fields
+    const formData = new FormData(this._parentElement);
+    const data = {};
+
+    formData.forEach((value, key) => {
+      if (key !== "quantity" && key !== "unit" && key !== "description") {
+        data[key] = value;
+      }
+    });
+
+    // Collect ingredients from all ingredient input groups
+    const ingredientRows =
+      this._parentElement.querySelectorAll(".ingredient-row");
+    let ingredients = [];
+
+    ingredientRows.forEach(row => {
+      const quantity = row.querySelector('input[name="quantity"]').value;
+      const unit = row.querySelector('select[name="unit"]').value;
+      const description = row.querySelector('input[name="description"]').value;
+
+      // Check if the ingredient fields are not empty
+      if (quantity || unit || (description && description.trim() !== "")) {
+        ingredients.push({
+          quantity: quantity ? +quantity : null,
+          unit,
+          description: description ? description.trim() : "",
+        });
+      }
+    });
+
+    // Remove duplicates based on 'quantity', 'unit', and 'description'
+    ingredients = ingredients.filter(
+      (ingredient, index, self) =>
+        index ===
+        self.findIndex(
+          i =>
+            i.quantity === ingredient.quantity &&
+            i.unit === ingredient.unit &&
+            i.description === ingredient.description
+        )
+    );
+
+    // Validate ingredients
+    if (ingredients.length === 0) {
+      this.showErrorModal("You must add at least one ingredient.");
+      return;
+    }
+
+    if (!this._validateIngredients(ingredients)) return;
+
+    // Construct the recipe data
+    const recipeData = {
+      title: data.title,
+      sourceUrl: data.sourceUrl,
+      image: data.image,
+      publisher: data.publisher,
+      cookingTime: +data.cookingTime,
+      servings: +data.servings,
+      ingredients,
+    };
+
+    this._handler(recipeData);
+  }
+
+  /**
    * Add an event listener to handle form submission and upload recipe data.
-   * This will gather the form data and pass it to the provided handler function.
+   * This will store the handler function to be called upon form submission.
    * @param {Function} handler The callback function to handle the form data.
    */
   addHandlerUpload(handler) {
-    this._parentElement.addEventListener("submit", e => {
-      e.preventDefault();
-
-      const formData = new FormData(this._parentElement);
-      const data = Object.fromEntries(formData);
-
-      // Collect ingredients from all ingredient input groups
-      const ingredientRows =
-        this._parentElement.querySelectorAll(".ingredient-row");
-      const ingredients = [];
-
-      ingredientRows.forEach(row => {
-        const quantity = row.querySelector('input[name="quantity"]').value;
-        const unit = row.querySelector('select[name="unit"]').value;
-        const description = row.querySelector(
-          'input[name="description"]'
-        ).value;
-
-        // Check if the ingredient fields are not empty
-        if (quantity || unit || (description && description.trim() !== "")) {
-          ingredients.push({
-            quantity: quantity ? +quantity : null,
-            unit,
-            description: description ? description.trim() : "",
-          });
-        }
-      });
-
-      // Validate and proceed with the rest of your code
-      if (ingredients.length === 0) {
-        this.showErrorModal("You must add at least one ingredient.");
-        return;
-      }
-
-      console.log(ingredients);
-      if (!this._validateIngredients(ingredients)) return;
-
-      const recipeData = {
-        title: data.title,
-        sourceUrl: data.sourceUrl,
-        image: data.image,
-        publisher: data.publisher,
-        cookingTime: +data.cookingTime,
-        servings: +data.servings,
-        ingredients,
-      };
-
-      handler(recipeData);
-    });
+    this._handler = handler; // Store the handler to be called later
   }
 
   /**
