@@ -31,15 +31,13 @@ class AddRecipeView extends View {
       <input value="23" required name="servings" type="number" />
     </div>
 
-    <div class="upload__column">
+    <div class="upload__column upload__column--ingredients">
       <h3 class="upload__heading">Ingredients</h3>
       <div class="ingredients-container">
       </div>
-      <!-- Add Ingredient Button -->
       
     </div>
     <div class="upload__btn--container">
-      <!-- Submit Button -->
       <button class="btn upload__btn">
         <svg>
           <use href="${icons}#icon-upload-cloud"></use>
@@ -265,7 +263,7 @@ class AddRecipeView extends View {
         this._parentElement.querySelectorAll(".ingredient-row");
       const ingredients = [];
 
-      ingredientRows.forEach((row, index) => {
+      ingredientRows.forEach(row => {
         const quantity = row.querySelector('input[name="quantity"]').value;
         const unit = row.querySelector('select[name="unit"]').value;
         const description = row.querySelector(
@@ -288,6 +286,7 @@ class AddRecipeView extends View {
         return;
       }
 
+      console.log(ingredients);
       if (!this._validateIngredients(ingredients)) return;
 
       const recipeData = {
