@@ -1,3 +1,14 @@
+/* Shopping List Overlay */
+.overlay--shopping-list {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 100;
+}
+
 /* Shopping List Modal Window */
 .shopping-list-window {
   position: fixed;
