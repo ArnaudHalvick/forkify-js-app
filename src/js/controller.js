@@ -168,6 +168,17 @@ const controlAddRecipe = async function (newRecipe) {
 };
 
 /**
+ * Control rendering the shopping list when the modal is opened from the nav button
+ */
+const controlShowShoppingList = function () {
+  // Render the shopping list with current items
+  shoppingListView.render(model.getShoppingList());
+
+  // Open the shopping list modal
+  shoppingListView.toggleWindow();
+};
+
+/**
  * Control adding ingredients of the current recipe to the shopping list
  */
 const controlAddToShoppingList = function () {
@@ -221,6 +232,8 @@ const init = function () {
   recipeView.addHandlerAddToShoppingList(controlAddToShoppingList);
 
   shoppingListView.addHandlerDeleteItem(controlDeleteShoppingListItem);
+
+  shoppingListView.addHandlerShowWindowAndRender(controlShowShoppingList);
 };
 
 // Initialize the application

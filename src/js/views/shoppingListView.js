@@ -12,13 +12,7 @@ class ShoppingListView extends View {
 
   constructor() {
     super();
-    this._addHandlerShowWindow();
     this._addHandlerHideWindow();
-  }
-
-  // Method to open the modal
-  _addHandlerShowWindow() {
-    this._btnOpen.addEventListener("click", this.toggleWindow.bind(this));
   }
 
   // Method to close the modal
@@ -36,6 +30,16 @@ class ShoppingListView extends View {
   openWindow() {
     this._overlay.classList.remove("hidden");
     this._window.classList.remove("hidden");
+  }
+
+  /**
+   * Add handler for showing the shopping list window and rendering the list
+   * @param {Function} handler - Function to call when the modal is opened
+   */
+  addHandlerShowWindowAndRender(handler) {
+    this._btnOpen.addEventListener("click", function () {
+      handler();
+    });
   }
 
   /**
