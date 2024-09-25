@@ -111,6 +111,10 @@ const persistBookmarks = function () {
   localStorage.setItem("bookmarks", JSON.stringify(state.bookmarks)); // Save bookmarks to local storage
 };
 
+const persistShoppingList = function () {
+  localStorage.setItem("shoppingList", JSON.stringify(state.shoppingList));
+};
+
 /**
  * Add a recipe to bookmarks and persist to localStorage.
  * @param {Object} recipe - The recipe to bookmark.
@@ -142,6 +146,8 @@ export const deleteBookmark = function (id) {
 const init = function () {
   const storage = localStorage.getItem("bookmarks");
   if (storage) state.bookmarks = JSON.parse(storage); // Load bookmarks from localStorage
+  const storageShopping = localStorage.getItem("shoppingList");
+  if (storageShopping) state.shoppingList = JSON.parse(storageShopping);
 };
 
 init(); // Run initialization
@@ -198,8 +204,21 @@ export const uploadRecipe = async function (newRecipe) {
  * Add all ingredients of the current recipe to the shopping list
  */
 export const addToShoppingList = function () {
-  // Add ingredients of the current recipe to the shopping list state
-  state.shoppingList.push(...state.recipe.ingredients);
+  const ingredientsWithIds = state.recipe.ingredients.map(ing => {
+    return {
+      ...ing,
+      id: `${Date.now()}-${Math.random()}`,
+    };
+  });
+
+  state.shoppingList.push(...ingredientsWithIds);
+  persistShoppingList();
+};
+
+export const deleteShoppingListItem = function (id) {
+  const index = state.shoppingList.findIndex(el => el.id === id);
+  if (index !== -1) state.shoppingList.splice(index, 1);
+  persistShoppingList();
 };
 
 /**

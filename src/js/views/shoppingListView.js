@@ -39,9 +39,26 @@ class ShoppingListView extends View {
   }
 
   /**
+   * Add handler for deleting shopping list items
+   * @param {Function} handler - Function to call when an item is to be deleted
+   */
+  addHandlerDeleteItem(handler) {
+    this._parentElement.addEventListener("click", function (e) {
+      const btn = e.target.closest(".shopping-list__delete");
+      if (!btn) return;
+
+      const item = btn.closest(".shopping-list__item");
+      const id = item.dataset.itemId;
+
+      handler(id);
+    });
+  }
+
+  /**
    * Generate the HTML markup for the shopping list
    */
   _generateMarkup() {
+    if (this._data.length === 0) return "<p>Your shopping list is empty.</p>";
     return this._data.map(ing => this._generateMarkupIngredient(ing)).join("");
   }
 
@@ -50,7 +67,7 @@ class ShoppingListView extends View {
    */
   _generateMarkupIngredient(ing) {
     return `
-      <li class="shopping-list__item">
+      <li class="shopping-list__item" data-item-id="${ing.id}">
         <div class="shopping-list__quantity">
           ${ing.quantity ? ing.quantity : ""}
         </div>

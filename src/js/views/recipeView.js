@@ -3,7 +3,7 @@ import View from "./View.js";
 import fracty from "fracty";
 
 class RecipeView extends View {
-  _parentElement = document.querySelector(".recipe"); // Parent element for rendering the recipe
+  _parentElement = document.querySelector(".recipe");
   _errorMessage = "We could not find that recipe. Please try another one!";
   _successMessage = "";
 
@@ -25,9 +25,9 @@ class RecipeView extends View {
 
       if (!btn) return;
 
-      const updateTo = +btn.dataset.updateTo; // Get the new servings value
+      const updateTo = +btn.dataset.updateTo;
 
-      if (updateTo > 0) handler(updateTo); // Only update if servings is positive
+      if (updateTo > 0) handler(updateTo);
     });
   }
 

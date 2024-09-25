@@ -181,6 +181,14 @@ const controlAddToShoppingList = function () {
   shoppingListView.openWindow();
 };
 
+const controlDeleteShoppingListItem = function (id) {
+  // Delete the item from the model
+  model.deleteShoppingListItem(id);
+
+  // Update the shopping list view
+  shoppingListView.render(model.getShoppingList());
+};
+
 /**
  * Initialize the application by setting up all event listeners and handlers.
  */
@@ -211,6 +219,8 @@ const init = function () {
 
   // Link handler with the button in recipe view
   recipeView.addHandlerAddToShoppingList(controlAddToShoppingList);
+
+  shoppingListView.addHandlerDeleteItem(controlDeleteShoppingListItem);
 };
 
 // Initialize the application
