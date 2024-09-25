@@ -3,11 +3,14 @@ DONE - Display number of pages betweenthe pagination buttons
 DONE - Perform ingredientvalidation in view, before submitting the form - Warn ahead of time if the format is wrong
 DONE - Improve recipe ingredient input : separate in multiple fields and allow more than 6 ingredients
 DONE - When clearing bookmarks, update icon on current page
-Modify icon added to say that the recipe is from a user. Display some text maybe ? Add alt text to icon ?
+Not very insteresting, discarded - Modify icon added to say that the recipe is from a user. Display some text maybe ? Add alt text to icon ?
 
 // Advanced
-Shopping list feature : button that add all of the ingredients of the recipe to a list
-Weekly meal planning feature : assign recipes to the next 7 days and sho on a weekly calendar. 
+DONE - Shopping list feature : button that add all of the ingredients of the recipe to a list
+
+Probably done with this project, because I actually want to focus on backend (node.js, express.js, mongodb) So I will leave it like this for now and start learning backend
+
+Weekly meal planning feature : assign recipes to the next 7 days and show on a weekly calendar. 
     - Use drop down to assign recipe to day. If recipe already assigned to day = icon. Overwrite recipe if assigned again ?
     - Create pannel to show all assigned recipes on a weekly calendar
 
