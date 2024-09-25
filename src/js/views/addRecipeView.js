@@ -11,6 +11,7 @@ class AddRecipeView extends View {
   _btnClose = document.querySelector(".btn--close-modal");
   _errorModal = document.querySelector(".error-modal");
   _errorModalCloseBtn = document.querySelector(".error-modal__close-btn");
+  _errorModalOverlay = document.querySelector(".error-modal--overlay");
 
   // Store the initial form HTML to restore later (after success message)
   _formHTML = this._parentElement.innerHTML;
@@ -45,7 +46,8 @@ class AddRecipeView extends View {
   showErrorModal(message) {
     this._errorModal.querySelector(".error-modal__message").textContent =
       message;
-    this._errorModal.classList.remove("hidden");
+    this._errorModal.classList.toggle("hidden");
+    this._errorModalOverlay.classList.toggle("hidden");
   }
 
   /**
@@ -53,13 +55,21 @@ class AddRecipeView extends View {
    */
   closeErrorModal() {
     this._errorModal.classList.add("hidden");
+    this._errorModalOverlay.classList.toggle("hidden");
   }
 
   /**
    * Attach event handler to close the error modal
    */
   _addHandlerCloseErrorModal() {
+    // Close the error modal when the close button is clicked
     this._errorModalCloseBtn.addEventListener(
+      "click",
+      this.closeErrorModal.bind(this)
+    );
+
+    // Close the error modal when the overlay is clicked
+    this._errorModalOverlay.addEventListener(
       "click",
       this.closeErrorModal.bind(this)
     );
