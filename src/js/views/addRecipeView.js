@@ -29,7 +29,7 @@ class AddRecipeView extends View {
       <label>Prep time</label>
       <input value="23" required name="cookingTime" type="number" />
       <label>Servings</label>
-      <input value="23" required name="servings" type="number" />
+      <input value="4" required name="servings" type="number" />
     </div>
 
     <div class="upload__column upload__column--ingredients">
